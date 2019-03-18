@@ -2,8 +2,6 @@ package splunk
 
 import (
 	"log"
-
-	"github.com/denniswebb/go-splunk/splunk"
 )
 
 type Config struct {
@@ -14,8 +12,8 @@ type Config struct {
 }
 
 // Client() returns a new client for accessing Splunk.
-func (c *Config) Client() (*splunk.Client, error) {
-	client := splunk.New(c.URL, c.Username, c.Password, c.InsecureSkipVerify)
+func (c *Config) Client() (*Client, error) {
+	client := New(c.URL, c.Username, c.Password, c.InsecureSkipVerify)
 	log.Printf("[INFO] Splunk Client configured for: %s@%s", c.Username, c.URL)
 	return client, nil
 }

@@ -40,6 +40,8 @@ func Provider() terraform.ResourceProvider {
 
 		ResourcesMap: map[string]*schema.Resource{
 			"splunk_saved_search": resourceSplunkSavedSearch(),
+			"splunk_user": resourceSplunkUser(),
+			"splunk_role": resourceSplunkRole(),
 		},
 
 		ConfigureFunc: providerConfigure,
