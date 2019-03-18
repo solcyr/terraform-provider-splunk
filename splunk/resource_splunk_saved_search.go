@@ -1,11 +1,9 @@
 package splunk
 
 import (
-	"fmt"
+	/*"fmt"
 	"log"
-	"strings"
-
-	"github.com/denniswebb/go-splunk/splunk"
+	"strings"*/
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -644,7 +642,7 @@ func resourceSplunkSavedSearch() *schema.Resource {
 }
 
 func resourceSplunkSavedSearchCreate(d *schema.ResourceData, meta interface{}) error {
-	c := meta.(*splunk.Client)
+	/*c := meta.(*splunk.Client)
 
 	s := savedSearchFromResourceData(d)
 
@@ -661,11 +659,12 @@ func resourceSplunkSavedSearchCreate(d *schema.ResourceData, meta interface{}) e
 
 	resourceSplunkSavedSearchAclUpdate(c, s)
 
-	return resourceSplunkSavedSearchRead(d, meta)
+	return resourceSplunkSavedSearchRead(d, meta)*/
+        return nil;
 }
 
 func resourceSplunkSavedSearchRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*splunk.Client)
+	/*client := meta.(*splunk.Client)
 	savedSearch, err := client.SavedSearchRead(d.Id())
 	if err != nil {
 		if strings.Contains(err.Error(), "404") {
@@ -804,12 +803,12 @@ func resourceSplunkSavedSearchRead(d *schema.ResourceData, meta interface{}) err
 	err = d.Set("acl", f)
 	if err != nil {
 		return err
-	}
+	}*/
 
 	return nil
 }
 
-func flattenAcl(a *splunk.ACL) []interface{} {
+/*func flattenAcl(a *splunk.ACL) []interface{} {
 	m := make(map[string]interface{})
 
 	m["app"] = a.App
@@ -818,10 +817,10 @@ func flattenAcl(a *splunk.ACL) []interface{} {
 	m["read"] = a.Perms.Read
 	m["write"] = a.Perms.Write
 	return []interface{}{m}
-}
+}*/
 
 func resourceSplunkSavedSearchUpdate(d *schema.ResourceData, meta interface{}) error {
-	c := meta.(*splunk.Client)
+	/*c := meta.(*splunk.Client)
 
 	s := savedSearchFromResourceData(d)
 
@@ -833,10 +832,11 @@ func resourceSplunkSavedSearchUpdate(d *schema.ResourceData, meta interface{}) e
 
 	resourceSplunkSavedSearchAclUpdate(c, s)
 
-	return resourceSplunkSavedSearchRead(d, meta)
+	return resourceSplunkSavedSearchRead(d, meta)*/
+        return nil;
 }
 
-func resourceSplunkSavedSearchAclUpdate(c *splunk.Client, s *splunk.SavedSearch) error {
+/*func resourceSplunkSavedSearchAclUpdate(c *splunk.Client, s *splunk.SavedSearch) error {
 	log.Printf("[DEBUG] Splunk Saved Search ACL update configuration: %#v", s.ACL)
 	_, err := c.SavedSearchACLUpdate(&s.ACL, s.Name)
 
@@ -845,22 +845,22 @@ func resourceSplunkSavedSearchAclUpdate(c *splunk.Client, s *splunk.SavedSearch)
 	}
 
 	return nil
-}
+}*/
 
 func resourceSplunkSavedSearchDelete(d *schema.ResourceData, meta interface{}) error {
-	c := meta.(*splunk.Client)
+	/*c := meta.(*splunk.Client)
 
 	log.Printf("[INFO] Deleting Splunk Saved Search: %s", d.Id())
 
 	err := c.SavedSearchDelete(d.Id())
 	if err != nil {
 		return fmt.Errorf("Error deleting Splunk Saved Search: %s", err)
-	}
+	}*/
 
 	return nil
 }
 
-func savedSearchFromResourceData(d *schema.ResourceData) *splunk.SavedSearch {
+/*func savedSearchFromResourceData(d *schema.ResourceData) *splunk.SavedSearch {
 	savedSearch := &splunk.SavedSearch{
 		Name: d.Get("name").(string),
 		Configuration: splunk.SavedSearchConfiguration{
@@ -1001,4 +1001,4 @@ func stringArrayFromInterface(i []interface{}) (s []string) {
 		s[idx] = v.(string)
 	}
 	return
-}
+}*/
