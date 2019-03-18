@@ -27,6 +27,7 @@ Enter the provider directory and build the provider
 
 ```sh
 $ cd $GOPATH/src/github.com/terraform-providers/terraform-provider-$PROVIDER_NAME
+$ go get ./...
 $ go install
 ```
 
