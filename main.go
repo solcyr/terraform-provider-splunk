@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/denniswebb/terraform-provider-splunk/splunk"
+	"github.com/solcyr/terraform-provider-splunk/splunk"
 	"github.com/hashicorp/terraform/plugin"
 )
 
