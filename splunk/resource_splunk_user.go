@@ -124,10 +124,10 @@ func resourceSplunkUserUpdate(d *schema.ResourceData, meta interface{}) error {
 
 	r := url.Values{}
         //r.Set("name",     d.Get("name").(string))
-        r.Set("password", d.Get("password").(string))
         r.Set("email",    d.Get("email").(string))
         r.Set("realname", d.Get("real_name").(string))
         if d.HasChange("password") {
+            r.Set("password", d.Get("password").(string))
             r.Set("force-change-pass", "true")
         }
 

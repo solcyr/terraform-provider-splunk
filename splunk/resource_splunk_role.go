@@ -2,6 +2,7 @@ package splunk
 
 import (
     "log"
+    "strings"
     "github.com/hashicorp/terraform/helper/schema"
     "github.com/oliveagle/jsonpath"
     "fmt"
@@ -152,9 +153,34 @@ func resourceSplunkRoleUpdate(d *schema.ResourceData, meta interface{}) error {
 
 func resourceSplunkRoleDelete(d *schema.ResourceData, meta interface{}) error {
         c := meta.(*Client)
+        c.client.SetQueryParam("count", "0")
+
+        log.Printf("[DEBUG] Search for users having this role: %s", d.Id())
+        responseTxt, err := c.Get(PathUserCreate)
+        if err != nil {
+            return err
+        }
+
+        var data interface{}
+        json.Unmarshal([]byte(responseTxt), &data)
+
+        res, err := jsonpath.JsonPathLookup(data, "$.entry.content.roles")
+        if err != nil {
+            return err
+        }
+        t := res.([]interface{})
+        for _, v := range t {
+            roles := fmt.Sprint(v)
+            log.Printf("[DEBUG] role in use: %s", roles)
+            if strings.Contains(roles, d.Id()) {
+                log.Printf("[DEBUG] role in use: %s", d.Id())
+                return fmt.Errorf("Failed to delete a role in use")
+	    }
+        }
+
 
         log.Printf("[DEBUG] Splunk Role Deletion: %s", d.Id())
-        err := c.Delete(fmt.Sprintf(PathRoleSearch, url.QueryEscape(d.Id())))
+        err = c.Delete(fmt.Sprintf(PathRoleSearch, url.QueryEscape(d.Id())))
 
         return err
 
