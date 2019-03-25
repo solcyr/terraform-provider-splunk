@@ -63,13 +63,13 @@ func resourceSplunkRoleCreate(d *schema.ResourceData, meta interface{}) error {
             r.Add("imported_roles", element.(string))
         }
 
-        d.SetId(d.Get("name").(string))
-
-        log.Printf("[DEBUG] Splunk Role Creation: %s", d.Id())
         _, err := c.Post(PathRoleCreate, r)
         if  err != nil  {
-            return err
+            return fmt.Errorf("Failed to create role: %s", err)
         }
+
+        d.SetId(d.Get("name").(string))
+        log.Printf("[DEBUG] Splunk Role Creation: %s", d.Id())
 
         return resourceSplunkRoleRead(d, meta)
 }
@@ -144,7 +144,7 @@ func resourceSplunkRoleUpdate(d *schema.ResourceData, meta interface{}) error {
         log.Printf("[DEBUG] Splunk Role Update: %s", d.Get("name").(string))
         _, err := c.Post(fmt.Sprintf(PathRoleSearch, url.QueryEscape(d.Id())), r)
         if  err != nil  {
-            return err
+            return fmt.Errorf("Failed to update role: %s", err)
         }
 
         return resourceSplunkRoleRead(d, meta)
