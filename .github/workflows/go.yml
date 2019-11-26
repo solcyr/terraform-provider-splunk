@@ -1,4 +1,4 @@
-name: Go
+name: Terraform Provider For Splunk
 on: [push]
 jobs:
 
