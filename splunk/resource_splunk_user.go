@@ -62,13 +62,13 @@ func resourceSplunkUserCreate(d *schema.ResourceData, meta interface{}) error {
             r.Add("roles", element.(string))
         }
 
-        d.SetId(d.Get("name").(string))
-
-        log.Printf("[DEBUG] Splunk User Creation: %s", d.Id())
         _, err := c.Post(PathUserCreate, r)
         if  err != nil  {
-            return err
+            return fmt.Errorf("Failed to create user: %s", err)
         }
+
+        d.SetId(d.Get("name").(string))
+        log.Printf("[DEBUG] Splunk User Creation: %s", d.Id())
 
         return resourceSplunkUserRead(d, meta)
 }
@@ -124,10 +124,10 @@ func resourceSplunkUserUpdate(d *schema.ResourceData, meta interface{}) error {
 
 	r := url.Values{}
         //r.Set("name",     d.Get("name").(string))
-        r.Set("password", d.Get("password").(string))
         r.Set("email",    d.Get("email").(string))
         r.Set("realname", d.Get("real_name").(string))
         if d.HasChange("password") {
+            r.Set("password", d.Get("password").(string))
             r.Set("force-change-pass", "true")
         }
 
@@ -138,7 +138,7 @@ func resourceSplunkUserUpdate(d *schema.ResourceData, meta interface{}) error {
         log.Printf("[DEBUG] Splunk User Update: %s", d.Get("name").(string))
         _, err := c.Post(fmt.Sprintf(PathUserSearch, url.QueryEscape(d.Id())), r)
         if  err != nil  {
-            return err
+            return fmt.Errorf("Failed to update user: %s", err)
         }
 
         return resourceSplunkUserRead(d, meta)

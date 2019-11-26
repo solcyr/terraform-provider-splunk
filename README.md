@@ -11,7 +11,7 @@ Requirements
 ------------
 
 -	[Terraform](https://www.terraform.io/downloads.html) 0.10.x
--	[Go](https://golang.org/doc/install) 1.8 (to build the provider plugin)
+-	[Go](https://golang.org/doc/install) 1.19 (to build the provider plugin)
 
 Building The Provider
 ---------------------
@@ -27,7 +27,8 @@ Enter the provider directory and build the provider
 
 ```sh
 $ cd $GOPATH/src/github.com/terraform-providers/terraform-provider-$PROVIDER_NAME
-$ make build
+$ go get ./...
+$ go install
 ```
 
 Using the provider

@@ -2,6 +2,7 @@ package splunk
 
 import (
     "log"
+    "strings"
     "github.com/hashicorp/terraform/helper/schema"
     "github.com/oliveagle/jsonpath"
     "fmt"
@@ -63,13 +64,13 @@ func resourceSplunkRoleCreate(d *schema.ResourceData, meta interface{}) error {
             r.Add("imported_roles", element.(string))
         }
 
-        d.SetId(d.Get("name").(string))
-
-        log.Printf("[DEBUG] Splunk Role Creation: %s", d.Id())
         _, err := c.Post(PathRoleCreate, r)
         if  err != nil  {
-            return err
+            return fmt.Errorf("Failed to create role: %s", err)
         }
+
+        d.SetId(d.Get("name").(string))
+        log.Printf("[DEBUG] Splunk Role Creation: %s", d.Id())
 
         return resourceSplunkRoleRead(d, meta)
 }
@@ -144,7 +145,7 @@ func resourceSplunkRoleUpdate(d *schema.ResourceData, meta interface{}) error {
         log.Printf("[DEBUG] Splunk Role Update: %s", d.Get("name").(string))
         _, err := c.Post(fmt.Sprintf(PathRoleSearch, url.QueryEscape(d.Id())), r)
         if  err != nil  {
-            return err
+            return fmt.Errorf("Failed to update role: %s", err)
         }
 
         return resourceSplunkRoleRead(d, meta)
@@ -152,9 +153,34 @@ func resourceSplunkRoleUpdate(d *schema.ResourceData, meta interface{}) error {
 
 func resourceSplunkRoleDelete(d *schema.ResourceData, meta interface{}) error {
         c := meta.(*Client)
+        c.client.SetQueryParam("count", "0")
+
+        log.Printf("[DEBUG] Search for users having this role: %s", d.Id())
+        responseTxt, err := c.Get(PathUserCreate)
+        if err != nil {
+            return err
+        }
+
+        var data interface{}
+        json.Unmarshal([]byte(responseTxt), &data)
+
+        res, err := jsonpath.JsonPathLookup(data, "$.entry.content.roles")
+        if err != nil {
+            return err
+        }
+        t := res.([]interface{})
+        for _, v := range t {
+            roles := fmt.Sprint(v)
+            log.Printf("[DEBUG] role in use: %s", roles)
+            if strings.Contains(roles, d.Id()) {
+                log.Printf("[DEBUG] role in use: %s", d.Id())
+                return fmt.Errorf("Failed to delete a role in use")
+	    }
+        }
+
 
         log.Printf("[DEBUG] Splunk Role Deletion: %s", d.Id())
-        err := c.Delete(fmt.Sprintf(PathRoleSearch, url.QueryEscape(d.Id())))
+        err = c.Delete(fmt.Sprintf(PathRoleSearch, url.QueryEscape(d.Id())))
 
         return err
 
