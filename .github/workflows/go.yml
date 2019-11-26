@@ -26,3 +26,11 @@ jobs:
 
     - name: Build
       run: go build -v .
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: terraform-provider-splunk
+        # Directory containing files to upload
+        path: .
