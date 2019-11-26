@@ -50,7 +50,7 @@ func resourceSplunkRole() *schema.Resource {
 func resourceSplunkRoleCreate(d *schema.ResourceData, meta interface{}) error {
         c := meta.(*Client)
 
-	r := url.Values{}
+	    r := url.Values{}
         r.Set("name",       d.Get("name").(string))
         r.Set("srchFilter", d.Get("search_filter").(string))
         r.Set("defaultApp", "search")
