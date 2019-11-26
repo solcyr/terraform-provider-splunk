@@ -1,6 +1,7 @@
 package splunk
 
 import (
+	"os"
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"
 )
@@ -49,10 +50,16 @@ func Provider() terraform.ResourceProvider {
 }
 
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
+	
+	password := d.Get("password").(string)
+	if (password == "")  {
+		password = os.Getenv("SPLUNK_PASSWORD")
+	}
+	
 	config := Config{
 		URL:                d.Get("url").(string),
 		Username:           d.Get("username").(string),
-		Password:           d.Get("password").(string),
+		Password:           password,
 		InsecureSkipVerify: d.Get("insecure_skip_verify").(bool),
 	}
 
