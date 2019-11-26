@@ -33,4 +33,4 @@ jobs:
         # Artifact name
         name: terraform-provider-splunk
         # Directory containing files to upload
-        path: .
+        path: terraform-provider-splunk
