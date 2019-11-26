@@ -3,7 +3,7 @@ on: [push]
 jobs:
 
   build_linux:
-    name: Build
+    name: Linux Build
     runs-on: ubuntu-latest
     steps:
 
@@ -31,13 +31,13 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         # Artifact name
-        name: terraform-provider-splunk_linux
+        name: terraform-provider-splunk-linux
         # Directory containing files to upload
         path: terraform-provider-splunk
 
 
   build_windows:
-    name: Build
+    name: Windows Build
     runs-on: windows-latest
     steps:
 
@@ -61,6 +61,6 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         # Artifact name
-        name: terraform-provider-splunk_windows-latest
+        name: terraform-provider-splunk-windows
         # Directory containing files to upload
-        path: terraform-provider-splunk
+        path: terraform-provider-splunk.exe
