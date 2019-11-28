@@ -64,6 +64,7 @@ jobs:
         path: terraform-provider-splunk.exe
           
   create_release:
+    needs: [build_linux, build_windows]
     name: Create Release
     runs-on: ubuntu-latest
     steps:
