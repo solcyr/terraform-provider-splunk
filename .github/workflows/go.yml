@@ -83,7 +83,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: terraform-provider-splunk.exe, terraform-provider-splunk
+          artifact: "terraform-provider-splunk*"
           body: Latest Release
           draft: true
           tag: ${{ github.ref }}
