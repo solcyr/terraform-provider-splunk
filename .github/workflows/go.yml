@@ -60,7 +60,36 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:
-        # Artifact name
         name: terraform-provider-splunk-windows
-        # Directory containing files to upload
         path: terraform-provider-splunk.exe
+          
+  create_release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Linux Artifact
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: terraform-provider-splunk-linux
+          path: terraform-provider-splunk
+          
+      - name: Get Windows Artifact
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: terraform-provider-splunk-windows
+          path: terraform-provider-splunk.exe
+        
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false        
