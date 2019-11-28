@@ -2,6 +2,7 @@ package splunk
 
 import (
     "os"
+    "strconv"
     "github.com/hashicorp/terraform/helper/schema"
     "github.com/hashicorp/terraform/terraform"
 )
@@ -51,24 +52,24 @@ func Provider() terraform.ResourceProvider {
 
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 
-    username := d.Get("username").(string)
-    if (password == "")  {
-        username = os.Getenv("SPLUNK_USERNAME")
+    username := os.Getenv("SPLUNK_USERNAME")
+    if (username == "")  {
+        username = d.Get("username").(string)
     }
 
-    password := d.Get("password").(string)
+    password := os.Getenv("SPLUNK_PASSWORD")
     if (password == "")  {
-        password = os.Getenv("SPLUNK_PASSWORD")
+        password = d.Get("password").(string)
     }
 
-    url := d.Get("url").(string)
-    if (password == "")  {
-        url = os.Getenv("SPLUNK_URL")
+    url := os.Getenv("SPLUNK_URL")
+    if (url == "")  {
+        url = d.Get("url").(string)
     }
 
-    insecure_skip_verify := d.Get("insecure_skip_verify").(bool)
-    if (password == "")  {
-        insecure_skip_verify = os.Getenv("SPLUNK_INSECURE_SKIP_VERIFY")
+    insecure_skip_verify, err := strconv.ParseBool(os.Getenv("SPLUNK_INSECURE_SKIP_VERIFY"))
+    if (err != nil)  { 
+        insecure_skip_verify = d.Get("insecure_skip_verify").(bool)
     }
 
     config := Config{
