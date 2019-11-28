@@ -80,9 +80,7 @@ jobs:
           name: terraform-provider-splunk-windows
           path: terraform-provider-splunk.exe
    
-      - name: GitHub Releases
-        uses: fnkr/github-action-ghr@v1.2 
-        env:
-          GHR_COMPRESS: zip
-          GHR_PATH: .
+      - name: Release GitHub Actions
+        uses: technote-space/release-github-actions@v1
+        with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
