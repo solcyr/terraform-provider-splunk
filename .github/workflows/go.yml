@@ -79,18 +79,10 @@ jobs:
         with:
           name: terraform-provider-splunk-windows
           path: terraform-provider-splunk.exe
-        
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+   
+      - name: GitHub Releases
+        uses: fnkr/github-action-ghr@v1.2 
         env:
+          GHR_COMPRESS: zip
+          GHR_PATH: .
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-          draft: false
-          prerelease: false        
