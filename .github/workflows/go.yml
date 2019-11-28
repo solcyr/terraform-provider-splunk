@@ -80,7 +80,14 @@ jobs:
           name: terraform-provider-splunk-windows
           path: terraform-provider-splunk.exe
    
-      - name: Release GitHub Actions
-        uses: technote-space/release-github-actions@v1
+      - name: GH Release
+        uses: softprops/action-gh-release@v0.1.0
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Note-worthy description of changes in release
+          body: Latest Release
+          # Gives the release a custom name
+          name: Splunk Terraform Provider
+          # Creates a draft release
+          draft: true
+          # Comma-delimited list of path globs for asset files to upload
+          files:  terraform-provider-splunk.exe,  terraform-provider-splunk
