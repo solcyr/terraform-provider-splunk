@@ -86,5 +86,6 @@ jobs:
           artifacts: terraform-provider-splunk.exe, terraform-provider-splunk
           body: Latest Release
           draft: true
+          tag: ${{ github.ref }}
           name: Splunk Terraform Provider
           token: ${{ secrets.GITHUB_TOKEN }}
